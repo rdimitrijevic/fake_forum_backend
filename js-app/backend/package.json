@@ -1,0 +1,25 @@
+{
+  "name": "fake_forum_backend",
+  "version": "1.0.0",
+  "description": "Backend side of js-app for 'Script Languages' course project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rdimitrijevic/FakeForum.git"
+  },
+  "author": "Radoslav Dimitrijevic <rdimitrijevic06@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rdimitrijevic/FakeForum/issues"
+  },
+  "homepage": "https://github.com/rdimitrijevic/FakeForum#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
