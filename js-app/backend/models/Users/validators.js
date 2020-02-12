@@ -1,8 +1,8 @@
-const User = require('./index');
 
 function password_val(pass) {
     if (pass.length < 8)
         return false;
+    return true;
 };
 
 const passwordVal = {
@@ -12,15 +12,11 @@ const passwordVal = {
 
 
 function username_val(usrname) {
-    
-    if( usrname < 6)
-    return false;
 
-    let p = await User.find({ username: usrname });
-    
-    if( p.username === usrname)
+    if (usrname.length < 6)
         return false;
-
+    
+    return true
 };
 
 const usernameVal = {
@@ -31,10 +27,12 @@ const usernameVal = {
 
 function email_val(email) {
     let re = /\S+@\S+\.\S+/;
-    if( email.length < 6 )
+    if (email.length < 6)
         return false;
-    if( !re.test(email) )
-         return false;
+    if (!re.test(email))
+        return false;
+
+    return true;
 };
 
 const emailVal = {

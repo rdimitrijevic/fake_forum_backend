@@ -11,7 +11,7 @@ const user = new mongoose.Schema({
     password: {
         type: mongoose.SchemaTypes.String,
         required: true,
-        validate: passwordVal
+        validate: passwordVal,
     },
     email:{
         type: mongoose.SchemaTypes.String,
@@ -23,9 +23,14 @@ const user = new mongoose.Schema({
         required: true,
         enum: ['male', 'female']
     }
-
+    
+},
+{
+    timestamps: {
+        createdAt: 'userCreated'
+    }
 });
 
-const User = mongoose.model('User', user);
+const User = mongoose.model('Users', user);
 
 module.exports = User;
