@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { titleVal } = require('validators');
 
 const topicSchema = new mongoose.Schema({
     createdBy: {
@@ -9,12 +10,14 @@ const topicSchema = new mongoose.Schema({
     title: {
         type: mongoose.SchemaTypes.String,
         minlength: 10,
-        maxlength: 30
+        maxlength: 30,
+        validate: titleVal
     }
 },
 { 
     timestamps: {
-        createdAt: 'createdAt'
+        createdAt: 'createdAt',
+        updatedAt: 'lastPost'
     }
 });
 
