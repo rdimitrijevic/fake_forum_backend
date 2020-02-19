@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const body_parser = require('body-parser');
-// const User = require('./models/Users');
+const User = require('./models/Users');
 const PORT = 8001;
 
 app = express();
@@ -16,10 +16,10 @@ let p = mongoose.connect(DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopol
 
 
 
-/* usr = new User({
-    username: "32131 g23131",
+usr = new User({
+    username: "32123fsafa131",
     password: "password12",
-    email: "radoslav96133323@raf.rs",
+    email: "radoslav23@raf.rs",
     gender: "male"
 });
 
@@ -29,6 +29,6 @@ p.then( () => {
     .catch((err) => { console.log('error : ' + err) });
 })
 .catch((err) => console.log(err));
- */
+
 
  app.listen(PORT, () => console.log(`connected ${PORT}`));
