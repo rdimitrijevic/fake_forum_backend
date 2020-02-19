@@ -15,8 +15,12 @@ function username_val(usrname) {
 
     if (usrname.length < 6)
         return false;
-    
-    return true
+
+    let re = /^\d+$/gm;
+    if (re.test(usrname.trim().replace(" ", "")))
+        return false;
+
+    return true;
 };
 
 const usernameVal = {

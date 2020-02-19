@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 const { usernameVal, passwordVal, emailVal } = require('./validators');
+const { pass_hash } = require('./services');
 
 const user = new mongoose.Schema({
-
     username: {
         type: mongoose.SchemaTypes.String,
         required: true,
-        validate: usernameVal
+        validate: usernameVal,
     },
     password: {
         type: mongoose.SchemaTypes.String,
@@ -31,6 +31,9 @@ const user = new mongoose.Schema({
     }
 });
 
-const User = mongoose.model('Users', user);
+user.pre('save', function (next) {
+    pass_hash(next, this);
+});
+const User = mongoose.model('Users', user, 'Users');
 
 module.exports = User;
