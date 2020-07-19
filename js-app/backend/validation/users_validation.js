@@ -1,115 +1,55 @@
+const { username_val, password_val, email_val, gender_val } = require('./util/users_validation_utils');
 
-function password_val(req, res, next) {
-    let pass = req.body.password;
+async function register_validation(req, res, next) {
+    let user_val = username_val(req.body.username);
+    let pass_val = password_val(req.body.password);
+    let mail_val = email_val(req.body.email);
+    let gend_val = gender_val(req.body.gender);
 
-    if (typeof pass !== 'string') {
-        res
-        .status(400)
-        .send({ error: "Invalid data type" });
-        
-        return;
-    }
+    let result = await Promise.all(
+        [user_val,
+         pass_val,
+         mail_val,
+         gend_val]
+    ).catch(err => console.log(err));
 
-    if (pass.length >= 8)
-        next();
-    else
-        res
-        .status(400)
-        .send({ error: "Password too short" });
-}
+    for (var i = 0; i < result.length; i++) {
+        if('error' in result[i]){
+            res
+            .status(400)
+            .send({ error: result[i]['error'] });
 
-function username_val(req, res, next) {
-    let usrname = req.body.username;
-    let re = /^\d+$/gm;
-
-    if (typeof usrname !== 'string') {
-        res
-        .status(400)
-        .send({ error: "Invalid data type" });
-
-        return;
-    }
-
-    if (re.test(usrname.trim().replace(" ", ""))) {
-        res
-        .status(400)
-        .send({ error: "Invalid username format"})
-
-        return
-    }
-
-    if (usrname.length < 6){
-        
-        res
-        .status(400)
-        .send({ error: "Username too short" });
-
-        return
-    }
-
-
-
-    next();
-}
-
-
-function email_val(req, res, next) {
-    let email = req.body.email;
-    let re = /\S+@\S+\.\S+/;
-
-    if (typeof email !== 'string') {
-        res
-        .status(400)
-        .send({ error: "Invalid data type" });
-
-        return;
-    }
-
-    if (!re.test(email)){
-        res
-        .status(400)
-        .send({ error: "Invalid email format" });
-
-        return;
-    }
-    
-    if (email.length < 6){
-        res
-        .status(400)
-        .send({ error: "Email to short" });
-
-        return;
+            return;
+        }
     }
 
     next();
 }
 
-function gender_val(req, res, next) {
-    let gender = req.body.gender;
 
-    if (typeof gender !== 'string') {
-        res
-        .status(400)
-        .send({ error: "Invalid data type" });
+async function login_validation(req, res, next) {
+    let user_val = username_val(req.body.username);
+    let pass_val = password_val(req.body.password);
 
-        return;
-    }
+    let result = await Promise.all(
+        [user_val,
+         pass_val]
+    ).catch(err => console.log(err));
 
-    if (gender.toLowerCase() !== 'male'
-        && gender.toLowerCase() !== 'female') {
-        res
-        .status(400)
-        .send({ error: "Invalid gender format" });
+    for (var i = 0; i < result.length; i++) {
+        if('error' in result[i]){
+            res
+            .status(400)
+            .send({ error: result[i]['error'] });
 
-        return;
+            return;
+        }
     }
 
     next();
 }
 
 module.exports = {
-    password_val,
-    username_val,
-    email_val,
-    gender_val
-};
+    login_validation,
+    register_validation
+}

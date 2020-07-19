@@ -11,7 +11,7 @@ const postSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.String,
         required: true,
         maxlength: 128,
-        minlength: 2
+        minlength: 1
     },
     creator: {
         type: mongoose.SchemaTypes.ObjectId,

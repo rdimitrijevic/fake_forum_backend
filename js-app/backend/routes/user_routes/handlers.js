@@ -40,7 +40,7 @@ async function login_handler(req, res) {
 
     if (result == null) {
         res
-        .status(400)
+        .status(404)
         .send({ error: "User not found" });
 
         return;
@@ -72,6 +72,41 @@ async function login_handler(req, res) {
         .status(400)
         .send({ error: "Incorrect password" });
     }
+}
+
+async function change_password(req, res) {
+    const password = req.body.password;
+    const new_password = req.body.new_password;
+
+    const id = req.params.id;
+
+    try {
+        let user = await user_services
+                                    .get_by_id(id);
+    } catch (error) {
+        console.log(error);
+    }
+
+    if (user === null) {
+        res
+        .status(404)
+        .send({ error: "Requested user not found" });
+
+        return;
+    }
+
+    let check = bcrypt
+                    .compareSync(password, user.password);
+
+    if (!check) {
+        res
+        .status(400)
+        .send({ error: "Wrong current password" });
+
+        return;
+    }
+
+    
 }
 
 module.exports = {

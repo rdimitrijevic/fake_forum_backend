@@ -1,21 +1,19 @@
 const Topics = require('../models/Topics')
 
-/*
-    The parameter user is a structure, containing
-    either an _id field, or an username field,
-    thus enabling querying user created topics by db
-    _id or by the unique username.
-
-    Returns collection of topics if found, or null
-    if every other case.
+/** 
+ * @param {Topic creators id} id
+ * @returns {Collection of topics if found, null otherwise}
+ * @description Basic function for aquiring all topics 
+ * created by a single user
+ * 
 */
-async function get_user_topics(user) {
-    const user_id = user._id;
+async function get_user_topics(id) {
+    const user_id = id;
     let topics = null;
     
     try {
         topics = await Topics
-        .find({ creator: user_id });
+                            .find({ creator: user_id });
     } catch (error) {
         console.log('In function user_services/get_user_topics:\n' + error);
     }

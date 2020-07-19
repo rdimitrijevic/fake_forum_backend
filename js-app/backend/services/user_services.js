@@ -7,8 +7,9 @@ const Users = require('../models/Users');
  * @param {Password for user being created} pass 
  * @param {Email for user being created} email 
  * @param {Gender for user being created} gender 
- * @returns New user id if added successfully or false if not
+ * @returns {New user id if added successfully or false if not}
  * @description Basic function for adding a new user to the DB
+ * 
  */
 async function add(username, pass, email, gender) {
     const new_user = new Users({
@@ -34,7 +35,7 @@ async function add(username, pass, email, gender) {
 /**
  * 
  * @param {Username of user account} auth 
- * @returns Desired user if auth is either an existing username
+ * @returns {Requested user if found, null otherwise}
  * @description Used to extract a user from the DB using his username
  */
 async function get_by_username(auth) {
@@ -42,7 +43,7 @@ async function get_by_username(auth) {
     
     try {
         user = await Users
-        .findOne({ username: auth });        
+                        .findOne({ username: auth });        
     } catch (error) {
         console.log(`In user_services/get_by_username: \n${error}`);
     }
@@ -50,7 +51,28 @@ async function get_by_username(auth) {
     return user;
 }
 
+/**
+ * 
+ * @param {Id of requested user} id
+ * @returns {User with requested id if found, null otherwise}
+ * @description Basic function for aquiring a user based on his id
+ * 
+ */
+async function get_by_id(id) {
+    let user = null;
+
+    try {
+        user = await Users
+                        .findById(id);
+    } catch (error) {
+        console.log(error);
+    }
+
+    return user;
+}
+
 module.exports = {
     add,
-    get_by_username
+    get_by_username,
+    get_by_id
 };

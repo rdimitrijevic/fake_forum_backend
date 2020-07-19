@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { titleVal } = require('validators');
+const { titleVal } = require('./topics_validation');
 
 const topicSchema = new mongoose.Schema({
     createdBy: {
