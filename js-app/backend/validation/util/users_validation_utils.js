@@ -1,91 +1,57 @@
 
 async function password_val(pass) {
     if (typeof pass !== 'string') {
-        return { 
-            error: "Invalid password data type"
-        };
+        throw Error('Invalid password data type');
     }
 
     if (pass.length < 8)
-        return { 
-            error: "Password too short"
-        };
+        throw Error('Password too short');
 
-    return {
-        ok: true
-    };
+    return true;
 }
 
 async function username_val(usrname) {
     let re = /^\d+$/gm;
 
     if (typeof usrname !== 'string') {
-        return { 
-            error: "Invalid username data type" 
-        };
+        throw Error('Invalid username data type');
     }
 
     if (re.test(usrname.trim().replace(" ", ""))) {
-        return { 
-            error: "Invalid username format"
-        };
+        throw Error('Invalid username format');
     }
 
-    if (usrname.length < 6){
-        return {
-            error: "Username too short"
-        };
-    }
+    if (usrname.length < 6)
+        throw Error('Username too short');
 
-    return {
-        ok: true
-    };
+    return true;
 }
 
 
 async function email_val(email) {
     let re = /\S+@\S+\.\S+/;
 
-    if (typeof email !== 'string') {
-        return { 
-            error: "Invalid email data type" 
-        };
-    }
+    if (typeof email !== 'string')
+        throw Error('Invalid email data type');
 
-    if (!re.test(email)){
-        return { 
-            error: "Invalid email format" 
-        };
-    }
+    if (!re.test(email))
+        throw Error('Invalid email format');
     
-    if (email.length < 6){
-        return { 
-            error: "Email too short" 
-        };
-    }
+    if (email.length < 6)
+        throw Error('Email too short');
 
-    return {
-        ok: true
-    };
+    return true;
 }
 
 async function gender_val(gender) {
-    if (typeof gender !== 'string') {
-        return { 
-            error: "Invalid gender data type" 
-        };
-    }
+    if (typeof gender !== 'string')
+        throw Error('Invalid gender data type');
 
     if (gender.toLowerCase() !== 'male'
-        && gender.toLowerCase() !== 'female') {
-            return { 
-                error: "Invalid gender format" 
-            };
-    }
+        && gender.toLowerCase() !== 'female')
+            throw Error('Invalid gender format');
 
-    return { 
-        ok: true 
-    };
+    return true;
 }
 
 

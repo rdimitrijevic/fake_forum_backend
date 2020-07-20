@@ -1,55 +1,65 @@
 const { username_val, password_val, email_val, gender_val } = require('./util/users_validation_utils');
 
-async function register_validation(req, res, next) {
+function register_validation(req, res, next) {
     let user_val = username_val(req.body.username);
     let pass_val = password_val(req.body.password);
     let mail_val = email_val(req.body.email);
     let gend_val = gender_val(req.body.gender);
 
-    let result = await Promise.all(
-        [user_val,
-         pass_val,
-         mail_val,
-         gend_val]
-    ).catch(err => console.log(err));
+    Promise.all([
+        user_val,
+        pass_val,
+        mail_val,
+        gend_val
+    ])
+    .then( (_) => next() )
+    .catch(err => {
+        res
+        .status(400)
+        .send({ error: err.message });
+    });
 
-    for (var i = 0; i < result.length; i++) {
-        if('error' in result[i]){
-            res
-            .status(400)
-            .send({ error: result[i]['error'] });
-
-            return;
-        }
-    }
-
-    next();
 }
 
 
-async function login_validation(req, res, next) {
+function login_validation(req, res, next) {
     let user_val = username_val(req.body.username);
     let pass_val = password_val(req.body.password);
 
-    let result = await Promise.all(
-        [user_val,
-         pass_val]
-    ).catch(err => console.log(err));
+    Promise.all([
+        user_val,
+        pass_val
+    ])
+    .then( (_) => next() )
+    .catch(err => {
+        res
+        .status(400)
+        .send({ error: err.message });
+    });
+}
 
-    for (var i = 0; i < result.length; i++) {
-        if('error' in result[i]){
-            res
-            .status(400)
-            .send({ error: result[i]['error'] });
+function update_validation(req, res, next) {
+    let validations = [];
 
-            return;
-        }
-    }
+    if ('new_email' in req.body)
+        validations.push(email_val(req.body.new_email));
 
-    next();
+    if ('new_password' in req.body)
+        validations.push(password_val(req.body.new_password));
+
+    validations.push(password_val(req.body.password));
+
+    Promise.all(validations)
+    .then((_) => { next() })
+    .catch(err => {
+        res
+        .status(400)
+        .send({ error: err.message });
+    });
 }
 
 module.exports = {
     login_validation,
-    register_validation
+    register_validation,
+    update_validation
 }

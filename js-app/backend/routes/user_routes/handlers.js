@@ -11,12 +11,12 @@ async function register_handler(req, res) {
     );
 
     let result = await user_services
-                        .add(
-                            req.body.username,
-                            hashed,
-                            req.body.email,
-                            req.body.gender
-                        );
+                        .add({
+                            username: req.body.username,
+                            password: hashed,
+                            email: req.body.email,
+                            gender: req.body.gender
+                        });
 
     if( result == false ) {
         res
@@ -74,20 +74,20 @@ async function login_handler(req, res) {
     }
 }
 
-async function change_password(req, res) {
+async function update_handler(req, res) {
     const password = req.body.password;
-    const new_password = req.body.new_password;
-
     const id = req.params.id;
 
+    let user = null
+
     try {
-        let user = await user_services
-                                    .get_by_id(id);
+        user = await user_services
+                        .get_by_id(id);
     } catch (error) {
-        console.log(error);
+        console.log(error.message);
     }
 
-    if (user === null) {
+    if (user == null) {
         res
         .status(404)
         .send({ error: "Requested user not found" });
@@ -105,11 +105,41 @@ async function change_password(req, res) {
 
         return;
     }
-
     
+
+    let params = new Object();
+    
+    if('new_email' in req.body)
+        params.email = req.body.new_email;
+
+    if('new_password' in req.body)
+        params.password = bcrypt.hashSync(
+            req.body.new_password,
+            bcrypt.genSaltSync(10)
+        );
+
+
+    user_services
+    .update(id, params)
+    .then(user => {
+        if(user == null)
+            res
+            .status(400)
+            .send({ error: 'Update unsuccessful' });
+        else
+            res
+            .status(200)
+            .send({ updated_id: user._id });
+    })
+    .catch(err => {
+        res
+        .status(400)
+        .send({ error: err.message });
+    });
 }
 
 module.exports = {
     register_handler,
-    login_handler
+    login_handler,
+    update_handler
 }
