@@ -35,8 +35,16 @@ async function login_handler(req, res) {
         password: req.body.password
     };
 
-    let result = await user_services
+    let result = null;
+
+    try {
+        result = await user_services
                         .get_by_username(user_auth.username);
+    } catch (error) {
+        res
+        .status(400)
+        .send({ error: error.message });
+    }
 
     if (result == null) {
         res
@@ -76,7 +84,7 @@ async function login_handler(req, res) {
 
 async function update_handler(req, res) {
     const password = req.body.password;
-    const id = req.params.id;
+    const id = req.user_id;
 
     let user = null
 
