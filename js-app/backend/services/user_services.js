@@ -1,6 +1,5 @@
 'use-strict';
 const Users = require('../models/Users');
-const User = require('../models/Users');
 
 /**
  * 
@@ -11,7 +10,7 @@ const User = require('../models/Users');
  * 
  */
 async function add(new_user) {
-    let user = new User(new_user);
+    let user = new Users(new_user);
     let res = false;
 
     try {

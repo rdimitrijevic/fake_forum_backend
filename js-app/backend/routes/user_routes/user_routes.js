@@ -3,7 +3,7 @@ const body_parser = require('body-parser');
 
 const router = express.Router();
 
-const user = require('./handlers');
+const user = require('./user_handlers');
 const user_val = require('../../validation/users_validation');
 const auth = require('../../auth/user_auth');
 

@@ -18,7 +18,7 @@ async function register_handler(req, res) {
                             gender: req.body.gender
                         });
 
-    if( result == false ) {
+    if( result === false ) {
         res
         .status(400)
         .send({ error: 'Unable to add user' });
@@ -115,7 +115,7 @@ async function update_handler(req, res) {
     }
     
 
-    let params = new Object();
+    let params = {};
     
     if('new_email' in req.body)
         params.email = req.body.new_email;
