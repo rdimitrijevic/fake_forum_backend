@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { titleVal } = require('./topics_validation');
 
 const topicSchema = new mongoose.Schema({
     createdBy: {
@@ -10,8 +9,7 @@ const topicSchema = new mongoose.Schema({
     title: {
         type: mongoose.SchemaTypes.String,
         minlength: 10,
-        maxlength: 30,
-        validate: titleVal
+        maxlength: 30
     }
 },
 { 
@@ -21,6 +19,6 @@ const topicSchema = new mongoose.Schema({
     }
 });
 
-const Topics = mongoose.model('Topcis', topicSchema);
+const Topics = mongoose.model('Topics', topicSchema, 'Topics');
 
 module.exports = Topics;

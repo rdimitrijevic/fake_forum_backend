@@ -2,7 +2,7 @@ const Topics = require('../models/Topics')
 
 /** 
  * @param {string} id - Topic creators id
- * @returns Collection of topics if found, null otherwise
+ * @returns {Promise<Object[]>} Collection of topics if found, null otherwise
  * @description Returns all topics of a single user
  * 
 */
@@ -20,13 +20,19 @@ async function get_by_user(id) {
     return topics;
 }
 
-
+/**
+ *
+ * @param {Object} new_topic - Object representing the topic to be created
+ * @returns {Promise<boolean|string>} New topic id if created
+ * successfully, false otherwise
+ */
 async function create(new_topic) {
     const topic = new Topics(new_topic);
-    let created = null;
+    let created = false;
 
     try {
-        created = await topic.save();
+        let _new = await topic.save();
+        created = _new._id;
     } catch(error) {
         console.log(`In function topic_services/create:\n ${error.message}`);
     }
@@ -38,7 +44,7 @@ async function create(new_topic) {
 /**
  *@param {string} new_title - New title of the topic
  *@param {string} id - ID of the topic to be updated
- *@returns The modified record if successful, null otherwise
+ *@returns {Promise<*>} The modified record if successful, null otherwise
  *@description Updates a single record's title
  *  
 */
@@ -59,4 +65,29 @@ async function update(id,new_title) {
     }
 
     return topic;
+}
+
+/**
+ *
+ * @returns {Promise<Object[]>} Promise containing collection of all
+ * topics if found, null otherwise
+ * @description Returns all records from the topics table
+ */
+async function get_all(){
+    let topics = [];
+
+    try{
+        topics = await Topics.find({});
+    }catch (error) {
+        console.log(`In funciton topic_services/get_all: \n${error.message}`);
+    }
+
+    return topics;
+}
+
+module.exports = {
+    get_by_user,
+    get_all,
+    update,
+    create
 }

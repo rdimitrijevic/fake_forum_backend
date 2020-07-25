@@ -5,7 +5,7 @@ const router = express.Router();
 
 const user = require('./user_handlers');
 const user_val = require('../../validation/users_validation');
-const auth = require('../../auth/user_auth');
+const auth = require('../../auth/auth');
 
 router.use(body_parser.json());
 router.use(body_parser.urlencoded({ extended: true }));
@@ -24,7 +24,7 @@ router.post(
 
 router.put(
     '/',
-    auth.authorized,
+    auth.user_auth,
     user_val.update_validation,
     user.update_handler
 );

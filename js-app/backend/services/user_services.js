@@ -9,7 +9,7 @@ const Users = require('../models/Users');
  * @description Basic function for adding a new user to the DB
  * 
  */
-async function add(new_user) {
+async function create(new_user) {
     let user = new Users(new_user);
     let res = false;
 
@@ -92,7 +92,7 @@ async function update(id, params) {
 }
 
 module.exports = {
-    add,
+    add: create,
     get_by_username,
     get_by_id,
     update

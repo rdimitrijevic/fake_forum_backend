@@ -3,22 +3,45 @@ const body_parser = require('body-parser');
 
 const router = express.Router();
 
+const auth = require('../../auth/auth');
+const topic = require('./topic_handlers');
+
 router.use(body_parser.json());
 router.use(body_parser.urlencoded({ extended: true }));
 
 /**
- * @description Route for fetching all topics
- */
-router.get('/');
-
-/**
- * @description Route for fetching a single topic
+ * Route for fetching a single topic
  * using its ID.
  */
 router.get('/:id');
 
 /**
- * @description Route for creating a new topic.
+ * Route for creating a new topic.
  * Requires authorization.
  */
-router.post('/');
+router.post(
+    '/',
+    auth.user_auth,
+    topic.create_handler
+);
+
+/**
+ * Route for updating topics.
+ * Requires authorization.
+ */
+router.put(
+    '/:id',
+    auth.user_auth,
+    auth.topics_auth,
+    topic.update_handler
+);
+
+/**
+ * Route for fetching all topics
+ */
+router.get(
+    '/',
+    topic.get_all_handler
+)
+
+module.exports = router;
