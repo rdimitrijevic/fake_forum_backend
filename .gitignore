@@ -139,6 +139,11 @@ dist
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
 
+# Other .idea files
+.idea/*.iml
+.idea/.gitignore
+.idea/*.xml
+
 # File-based project format
 *.iws
 

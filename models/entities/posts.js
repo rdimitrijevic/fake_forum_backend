@@ -13,7 +13,7 @@ const postSchema = new mongoose.Schema({
         maxlength: 128,
         minlength: 1
     },
-    creator: {
+    createdBy: {
         type: mongoose.SchemaTypes.ObjectId,
         required: true,
         ref: 'Users'

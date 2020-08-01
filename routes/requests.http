@@ -1,0 +1,36 @@
+GET http://localhost:8000/topics
+Accept: application/json
+
+###
+GET http://localhost:8000/topics/5f1c8126fd9bd07d93799034
+Accept: application/json
+
+###
+POST http://localhost:8000/topics
+Content-Type: application/json
+X-jwt-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMWM4MTI2ZmQ5YmQwN2Q5Mzc5OTAzNCIsImlhdCI6MTU5NjMxODYxMiwiZXhwIjoxNTk2MzI1ODEyfQ.gssmPETFZJ5QUQgwQvthILb74Ot28sFQVo9dU0jmmhc
+
+{
+  "title": "Tema lale"
+}
+
+###
+PUT http://localhost:8000/topics/5f25769602382d332499c260
+Content-Type: application/json
+X-jwt-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMWM4MTI2ZmQ5YmQwN2Q5Mzc5OTAzNCIsImlhdCI6MTU5NjMxODYxMiwiZXhwIjoxNTk2MzI1ODEyfQ.gssmPETFZJ5QUQgwQvthILb74Ot28sFQVo9dU0jmmhc
+
+{
+  "new_title": "Nova temaaa1234"
+}
+
+###
+POST http://localhost:8000/users/login
+Content-Type: application/json
+
+{
+  "username": "lale98",
+  "password": "lale98bg"
+}
+
+
+###

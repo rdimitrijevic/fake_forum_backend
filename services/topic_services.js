@@ -1,8 +1,8 @@
-const Topics = require('../models/Topics')
-
+const Topics = require('../models/entities/topics')
+const Topic = require('../models/responses/topic_response')
 /** 
  * @param {string} id - Topic creators id
- * @returns {Promise<Object[]>} Collection of topics if found, null otherwise
+ * @returns {Promise<TopicResponse[]>} Collection of topics if found, null otherwise
  * @description Returns all topics of a single user
  * 
 */
@@ -12,12 +12,20 @@ async function get_by_user(id) {
     
     try {
         topics = await Topics
-                            .find({ creator: user_id });
+                            .find({ createdBy: user_id });
     } catch (error) {
         console.log(`In function user_services/get_user_topics:\n ${error.message}`);
+        throw error;
     }
 
-    return topics;
+    return topics.map(topic => {
+        return Topic(
+            topic._id,
+            topic.title,
+            topic.createdBy,
+            topic.createdAt
+        );
+    });
 }
 
 /**
@@ -35,6 +43,7 @@ async function create(new_topic) {
         created = _new._id;
     } catch(error) {
         console.log(`In function topic_services/create:\n ${error.message}`);
+        throw error;
     }
 
     return created;
@@ -44,7 +53,7 @@ async function create(new_topic) {
 /**
  *@param {string} new_title - New title of the topic
  *@param {string} id - ID of the topic to be updated
- *@returns {Promise<*>} The modified record if successful, null otherwise
+ *@returns {Promise<TopicResponse|null>} The modified record if successful, null otherwise
  *@description Updates a single record's title
  *  
 */
@@ -62,14 +71,23 @@ async function update(id,new_title) {
         );
     } catch (error) {
         console.log(`In function topic_services/update: \n${error.message}`);
+        throw error;
     }
+
+    if(topic !== null)
+        topic = Topic(
+            topic._id,
+            topic.title,
+            topic.createdBy,
+            topic.createdAt
+        );
 
     return topic;
 }
 
 /**
  *
- * @returns {Promise<Object[]>} Promise containing collection of all
+ * @returns {Promise<TopicResponse[]>} Promise containing collection of all
  * topics if found, null otherwise
  * @description Returns all records from the topics table
  */
@@ -79,10 +97,18 @@ async function get_all(){
     try{
         topics = await Topics.find({});
     }catch (error) {
-        console.log(`In funciton topic_services/get_all: \n${error.message}`);
+        console.log(`In function topic_services/get_all: \n${error.message}`);
+        throw error;
     }
 
-    return topics;
+    return topics.map(topic => {
+        return Topic(
+            topic._id,
+            topic.title,
+            topic.createdBy,
+            topic.createdAt
+        );
+    });
 }
 
 module.exports = {
