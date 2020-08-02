@@ -1,14 +1,8 @@
 const user_services = require('../../services/user_services');
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-
+const utils = require('../../auth/auth_util');
 
 async function register_handler(req, res) {
-    let salts = bcrypt.genSaltSync(10);
-    let hashed = bcrypt.hashSync(
-        req.body.password,
-        salts
-    );
+    let hashed = utils.hash_password(req.body.password);
 
     let result = await user_services
                         .add({
@@ -55,17 +49,13 @@ async function login_handler(req, res) {
         return;
     }
 
-    let compare = bcrypt.compareSync(
+    let compare = utils.compare_password(
         user_auth.password,
         result.password
     );
     
     if(compare) {
-        const token = jwt.sign(
-            { id: result._id },
-            'skript2020',
-            { expiresIn: '2h' }
-        );
+        const token = utils.create_token(result._id, '2h');
 
         res
         .status(200)
@@ -104,8 +94,8 @@ async function update_handler(req, res) {
         return;
     }
 
-    let check = bcrypt
-                    .compareSync(password, user.password);
+    let check = utils
+        .compare_password(password, user.password);
 
     if (!check) {
         res
@@ -122,10 +112,8 @@ async function update_handler(req, res) {
         params.email = req.body.new_email;
 
     if('new_password' in req.body)
-        params.password = bcrypt.hashSync(
-            req.body.new_password,
-            bcrypt.genSaltSync(10)
-        );
+        params.password = utils
+            .hash_password(req.body.new_password);
 
 
     user_services

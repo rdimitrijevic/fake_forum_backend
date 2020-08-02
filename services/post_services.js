@@ -2,6 +2,7 @@ const Posts = require('../models/entities/posts');
 const Post = require('../models/responses/post_response');
 
 /**
+ *
  * @param {string} id - Posts owners ID
  * @returns {Promise<PostResponse[]>} Returns collection of posts if found, and
  * an empty collection in every other case.
@@ -47,7 +48,10 @@ async function get_by_topic(id) {
     return posts.map(post => {
         return Post(
             post._id,
-            post.createdBy
+            post.parentTopic,
+            post.createdBy,
+            post.content,
+            post.createdAt
         );
     });
 }
@@ -59,7 +63,7 @@ async function get_by_topic(id) {
  * false in every other case.
  */
 async function create(new_post) {
-    const post = new Post(new_post);
+    const post = new Posts(new_post);
     let created = false;
 
     try {
@@ -85,7 +89,7 @@ async function update(id,new_content) {
     try {
         post = await Posts.findOneAndUpdate(
             { _id: id },
-            { contents: new_content },
+            { content: new_content },
             {
                 new: true,
                 useFindAndModify: false
@@ -97,19 +101,45 @@ async function update(id,new_content) {
     }
 
     if(post !== null)
-        post = Topic(
+        post = Post(
             post._id,
-            post.title,
+            post.parentTopic,
             post.createdBy,
+            post.content,
             post.createdAt
         );
 
     return post;
 }
 
+/**
+ *
+ * @param post_id - ID of the post to be removed
+ * @returns {Promise<string|null>} ID of the removed post, null otherwise
+ */
+async function remove(post_id) {
+    let deleted = null;
+
+    try {
+        let removed_response = await Posts
+            .deleteOne({ _id: post_id });
+
+        if (removed_response.ok === 1)
+            deleted = post_id;
+
+    } catch (error) {
+        console.log(`In function topic_services/remove: \n${error.message}`);
+        throw error;
+    }
+
+    return deleted;
+}
+
+
 module.exports = {
     get_by_user,
     get_by_topic,
     create,
-    update
+    update,
+    remove
 };

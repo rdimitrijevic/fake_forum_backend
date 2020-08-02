@@ -8,29 +8,65 @@ Accept: application/json
 ###
 POST http://localhost:8000/topics
 Content-Type: application/json
-X-jwt-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMWM4MTI2ZmQ5YmQwN2Q5Mzc5OTAzNCIsImlhdCI6MTU5NjMxODYxMiwiZXhwIjoxNTk2MzI1ODEyfQ.gssmPETFZJ5QUQgwQvthILb74Ot28sFQVo9dU0jmmhc
+X-jwt-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMWM4MTI2ZmQ5YmQwN2Q5Mzc5OTAzNCIsImlhdCI6MTU5NjM2ODE2OCwiZXhwIjoxNTk2Mzc1MzY4fQ.Jtgm7dkv9ctUzb--tVx3JhZTwAeP4UbJVhuFDcX1cpo
 
 {
-  "title": "Tema lale"
+  "title": "Tema lale223"
 }
 
 ###
-PUT http://localhost:8000/topics/5f25769602382d332499c260
+PUT http://localhost:8000/topics/5f25e3ceabb3d91f83f73dc7
 Content-Type: application/json
-X-jwt-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMWM4MTI2ZmQ5YmQwN2Q5Mzc5OTAzNCIsImlhdCI6MTU5NjMxODYxMiwiZXhwIjoxNTk2MzI1ODEyfQ.gssmPETFZJ5QUQgwQvthILb74Ot28sFQVo9dU0jmmhc
+X-jwt-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMWM4MTI2ZmQ5YmQwN2Q5Mzc5OTAzNCIsImlhdCI6MTU5NjM2ODE2OCwiZXhwIjoxNTk2Mzc1MzY4fQ.Jtgm7dkv9ctUzb--tVx3JhZTwAeP4UbJVhuFDcX1cpo
 
 {
-  "new_title": "Nova temaaa1234"
+  "new_title": "tema lale98_2"
 }
 
-###
+### Login request
 POST http://localhost:8000/users/login
 Content-Type: application/json
 
 {
-  "username": "lale98",
-  "password": "lale98bg"
+  "username": "admin11",
+  "password": "admin1111"
 }
 
 
 ###
+POST http://localhost:8000/users/register
+Content-Type: application/json
+
+{
+  "username": "admin11",
+  "email": "admin11@adm.com",
+  "password": "admin1111",
+  "gender": "male"
+}
+
+###
+POST http://localhost:8000/posts/5f25e3ceabb3d91f83f73dc7
+Content-Type: application/json
+X-jwt-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMWM4MTI2ZmQ5YmQwN2Q5Mzc5OTAzNCIsImlhdCI6MTU5NjM2ODE2OCwiZXhwIjoxNTk2Mzc1MzY4fQ.Jtgm7dkv9ctUzb--tVx3JhZTwAeP4UbJVhuFDcX1cpo
+
+{
+  "content": "Ovo je neki sadrzaj mog posta 3"
+}
+
+###
+DELETE http://localhost:8000/posts/5f26af1b7a08581b5ea21c3a
+Content-Type: application/json
+X-jwt-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMWM4MTI2ZmQ5YmQwN2Q5Mzc5OTAzNCIsImlhdCI6MTU5NjM2ODE2OCwiZXhwIjoxNTk2Mzc1MzY4fQ.Jtgm7dkv9ctUzb--tVx3JhZTwAeP4UbJVhuFDcX1cpo
+
+###
+GET http://localhost:8000/posts/5f25e3ceabb3d91f83f73dc7
+Accept: application/json
+
+###
+PUT http://localhost:8000/posts/5f26af147a08581b5ea21c39
+Content-Type: application/json
+X-jwt-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMjZhN2U3YzcwNjY0MTk0ZmY4NDk0MiIsImlhdCI6MTU5NjM3MTA0OSwiZXhwIjoxNTk2Mzc4MjQ5fQ.Pq04sL-bYC_k7qOIN-Vr2YSGMKtE76GosxkWiGqvo7A
+
+{
+  "new_content": "Ovo je neki novi sadrzaj mog posta 2"
+}

@@ -1,6 +1,6 @@
 const topic_services = require('../../services/topic_services');
 
-function update_handler(req, res) {undefined
+function update_handler(req, res) {
     topic_services.update(
         req.params.id,
         req.body.new_title

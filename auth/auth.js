@@ -1,15 +1,13 @@
 const Users = require('../models/entities/users');
 const Topics = require('../models/entities/topics');
 const Posts = require('../models/entities/posts');
-const jwt = require('jsonwebtoken');
+const utils = require('./auth_util');
 
 function user_auth(req, res, next) {
     let decoded;
     try {
-        decoded = jwt.verify(
-            req.get('X-jwt-token'),
-            'skript2020'
-        );
+        decoded = utils
+            .verify_token(req.get('X-jwt-token'));
     } catch(error) {
         res
         .status(400)
@@ -63,7 +61,7 @@ function topics_auth(req, res, next) {
 }
 function posts_auth(req, res, next) {
     Posts
-        .findById(req.params.id)
+        .findById(req.params.post_id)
         .then(post => {
             if (post == null)
                 res
@@ -73,7 +71,7 @@ function posts_auth(req, res, next) {
             else if (req.user_id.toString() !== post.createdBy.toString())
                 res
                     .status(403)
-                    .send({ error: `Updating not allowed for user with id ${req.user_id}` });
+                    .send({ error: `Updating or deleting not allowed for user with id ${req.user_id}` });
             else
                 next();
         })
@@ -85,6 +83,7 @@ function posts_auth(req, res, next) {
 }
 
 module.exports = {
+    posts_auth,
     user_auth,
     topics_auth
 }

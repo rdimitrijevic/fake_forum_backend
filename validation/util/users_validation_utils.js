@@ -1,9 +1,8 @@
 /**
  * 
- * @param password - Password value to be validated
- * @returns True if password is successfuly validated, false otherwise 
+ * @param {string} password - Password value to be validated
+ * @returns {Promise<boolean>} True if password is successfully validated, false otherwise
  * @description Validates value that is passed in through the password parameter
- * 
  */
 async function password_val(password) {
     if (typeof password !== 'string') {
@@ -18,10 +17,9 @@ async function password_val(password) {
 
 /**
  * 
- * @param username - Username value to be validated
- * @returns True if username is successfuly validated, false otherwise 
+ * @param {string} username - Username value to be validated
+ * @returns {Promise<boolean>} True if username is successfully validated, false otherwise
  * @description Validates usrename that is passed in through the username parameter
- * 
  */
 async function username_val(username) {
     let re = /^\d+$/gm;
@@ -42,10 +40,9 @@ async function username_val(username) {
 
 /**
  * 
- * @param email - Email value to be validated
- * @returns True if email is successfuly validated, false otherwise 
+ * @param {string} email - Email value to be validated
+ * @returns {Promise<boolean>} True if email is successfully validated, false otherwise
  * @description Validates value that is passed in through the email parameter
- * 
  */
 async function email_val(email) {
     let re = /\S+@\S+\.\S+/;
@@ -65,10 +62,9 @@ async function email_val(email) {
 
 /**
  * 
- * @param gender - Gender value to be validated
- * @returns True if gender is successfuly validated, false otherwise 
+ * @param {string} gender - Gender value to be validated
+ * @returns {Promise<boolean>} True if gender is successfully validated, false otherwise
  * @description Validates value that is passed in through the gender parameter
- * 
  */
 async function gender_val(gender) {
     if (typeof gender !== 'string')
