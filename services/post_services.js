@@ -13,7 +13,7 @@ async function get_by_user(id) {
 
     try {
         posts = await Posts
-                        .find({ createdBy: user_id });
+            .find({ createdBy: user_id });
     } catch (error) {
         console.log('In function user_services/get_user_posts:\n' + error);
         throw error;
@@ -22,7 +22,10 @@ async function get_by_user(id) {
     return posts.map(post => {
         return Post(
             post._id,
-            post.createdBy
+            post.parentTopic,
+            post.createdBy,
+            post.content,
+            post.createdAt
         );
     });
 }
@@ -69,7 +72,7 @@ async function create(new_post) {
     try {
         let _new = await post.save();
         created = _new._id;
-    } catch(error) {
+    } catch (error) {
         console.log(`In function topic_services/create:\n ${error.message}`);
         throw error;
     }
@@ -83,7 +86,7 @@ async function create(new_post) {
  * @param {string} new_content - New content of the post
  * @returns {Promise<PostResponse|null>} The modified record if successful, null otherwise
  */
-async function update(id,new_content) {
+async function update(id, new_content) {
     let post = null
 
     try {
@@ -100,7 +103,7 @@ async function update(id,new_content) {
         throw error;
     }
 
-    if(post !== null)
+    if (post !== null)
         post = Post(
             post._id,
             post.parentTopic,
