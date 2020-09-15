@@ -2,11 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const body_parser = require('body-parser');
 const Router = require('./routes');
+const cors = require('cors');
 
 // const User = require('./models/Users');
 const PORT = 8000;
 
 app = express();
+app.use(cors());
 app.use(body_parser.json());
 app.use(body_parser.urlencoded({ extended: true }));
 app.use('/', Router);
@@ -14,7 +16,7 @@ let DB_CONNECTION = "mongodb+srv://lale:lalelale@cluster0-lazue.gcp.mongodb.net/
 
 let p = mongoose.connect(DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => { console.log("Connected to db") })
-    .catch((err) => { console.log(err) }); 
+    .catch((err) => { console.log(err) });
 
 
 
@@ -33,4 +35,4 @@ p.then( () => {
 .catch((err) => console.log(err));
  */
 
- app.listen(PORT, () => console.log(`connected ${PORT}`));
+app.listen(PORT, () => console.log(`connected ${PORT}`));

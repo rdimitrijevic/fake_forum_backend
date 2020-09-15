@@ -5,21 +5,21 @@ async function register_handler(req, res) {
     let hashed = utils.hash_password(req.body.password);
 
     let result = await user_services
-                        .add({
-                            username: req.body.username,
-                            password: hashed,
-                            email: req.body.email,
-                            gender: req.body.gender
-                        });
+        .add({
+            username: req.body.username,
+            password: hashed,
+            email: req.body.email,
+            gender: req.body.gender
+        });
 
-    if( result === false ) {
+    if (result === false) {
         res
-        .status(400)
-        .send({ error: 'Unable to add user' });
+            .status(400)
+            .send({ error: 'Unable to add user' });
     } else {
         res
-        .status(201)
-        .send({ new_user_id: result });
+            .status(201)
+            .send({ new_user_id: result });
     }
 }
 
@@ -34,17 +34,17 @@ async function login_handler(req, res) {
 
     try {
         result = await user_services
-                        .get_by_username(user_auth.username);
+            .get_by_username(user_auth.username);
     } catch (error) {
         res
-        .status(400)
-        .send({ error: error.message });
+            .status(400)
+            .send({ error: error.message });
     }
 
     if (result == null) {
         res
-        .status(404)
-        .send({ error: "User not found" });
+            .status(404)
+            .send({ error: "User not found" });
 
         return;
     }
@@ -53,23 +53,24 @@ async function login_handler(req, res) {
         user_auth.password,
         result.password
     );
-    
-    if(compare) {
+
+    if (compare) {
         const token = utils.create_token(result._id, '2h');
 
         res
-        .status(200)
-        .send({
-            access_token: token,
-            expiresIn: '2h'
-        });
-    
+            .status(200)
+            .send({
+                username: user_auth.username,
+                token: token,
+                expiresIn: '2h'
+            });
+
     } else {
         console.log('Incorrect password');
 
         res
-        .status(400)
-        .send({ error: "Incorrect password" });
+            .status(400)
+            .send({ error: "Incorrect password" });
     }
 }
 
@@ -81,15 +82,15 @@ async function update_handler(req, res) {
 
     try {
         user = await user_services
-                        .get_by_id(id);
+            .get_by_id(id);
     } catch (error) {
         console.log(error.message);
     }
 
     if (user == null) {
         res
-        .status(404)
-        .send({ error: "Requested user not found" });
+            .status(404)
+            .send({ error: "Requested user not found" });
 
         return;
     }
@@ -99,40 +100,40 @@ async function update_handler(req, res) {
 
     if (!check) {
         res
-        .status(400)
-        .send({ error: "Wrong current password" });
+            .status(400)
+            .send({ error: "Wrong current password" });
 
         return;
     }
-    
+
 
     let params = {};
-    
-    if('new_email' in req.body)
+
+    if ('new_email' in req.body)
         params.email = req.body.new_email;
 
-    if('new_password' in req.body)
+    if ('new_password' in req.body)
         params.password = utils
             .hash_password(req.body.new_password);
 
 
     user_services
-    .update(id, params)
-    .then(user => {
-        if(user == null)
+        .update(id, params)
+        .then(user => {
+            if (user == null)
+                res
+                    .status(400)
+                    .send({ error: 'Update unsuccessful' });
+            else
+                res
+                    .status(200)
+                    .send({ updated_id: user._id });
+        })
+        .catch(err => {
             res
-            .status(400)
-            .send({ error: 'Update unsuccessful' });
-        else
-            res
-            .status(200)
-            .send({ updated_id: user._id });
-    })
-    .catch(err => {
-        res
-        .status(400)
-        .send({ error: err.message });
-    });
+                .status(400)
+                .send({ error: err.message });
+        });
 }
 
 module.exports = {
